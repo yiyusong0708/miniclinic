@@ -1,0 +1,10 @@
+{
+  "totalDoctors": 5,
+  "totalPatients": 3,
+  "totalAppointments": 3,
+  "byStatus": {
+    "BOOKED": 2,
+    "COMPLETED": 1,
+    "CANCELLED": 0
+  }
+}

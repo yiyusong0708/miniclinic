@@ -144,13 +144,8 @@
                 <td th:text="${appt.status}" th:class="${'status-' + appt.status}">BOOKED</td>
 
                 <td>
-                <button th:data-id="${appt.id}"
-                        onclick="completeAppointment(this)" 
-                        class="btn-complete">看診完成</button>
-
-                <button th:data-id="${appt.id}" 
-                        onclick="cancelAppointment(this)"
-                        class="btn-cancel">取消</button>
+                    <button onclick="window.location.reload()" class="btn-complete">看診完成</button>
+                    <button onclick="window.location.reload()" class="btn-cancel">取消</button>
                 </td>
             </tr>
         </tbody>
