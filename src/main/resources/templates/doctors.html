@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>醫師清單 - MiniClinic</title>
+    <style>
+        body {
+            font-family: "Microsoft JhengHei", sans-serif;
+            max-width: 960px;
+            margin: 40px auto;
+            padding: 0 20px;
+            background-color: #ffffff;
+        }
+
+        h1 {
+            color: #0F2443;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        nav {
+            background: #0F2443;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        nav a {
+            color: white;
+            margin-right: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        nav a:hover {
+            color: #5EEAD4;
+        }
+
+
+        .filter-container {
+            margin-bottom: 25px;
+            font-size: 1rem;
+            color: #374151;
+            display: flex;
+            align-items: center;
+        }
+
+        .filter-label {
+            margin-right: 15px;
+            font-weight: bold;
+        }
+
+        .filter-btn {
+            display: inline-block;
+            padding: 6px 16px;
+            margin-right: 10px;
+            text-decoration: none;
+            color: #4b5563;
+            background-color: #e5e7eb;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active {
+            background-color: #14B8A6;
+            color: white;
+        }
+
+        .filter-btn:hover:not(.active) {
+            background-color: #d1d5db;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        th,
+        td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background-color: #0F2443;
+            color: white;
+            font-weight: bold;
+        }
+
+        td a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        td a:hover {
+            text-decoration: underline;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <a th:href="@{/}">首頁</a>
+        <a th:href="@{/doctors}">醫師清單</a>
+        <a th:href="@{/appointment/new}">線上掛號
+        </a>
+        <a th:href="@{/patients}">病歷資料</a>
+        <a th:href="@{/appointments}">掛號紀錄</a>
+        <a th:href="@{/stats}">統計資訊</a>
+    </nav>
+
+    <h1>醫師清單</h1>
+    <hr style="border: 0; border-top: 2px solid #14B8A6; margin-bottom: 25px;">
+
+    <div class="filter-container">
+        <span class="filter-label">科別篩選：</span>
+        <a th:href="@{/doctors}" class="filter-btn"
+            th:classappend="${selectedDept == null || selectedDept == ''} ? 'active'">全部</a>
+
+        <a th:each="dept : ${departments}" th:href="@{/doctors(department=${dept})}" th:text="${dept}"
+            class="filter-btn" th:classappend="${selectedDept == dept} ? 'active'">科別</a>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 15%">編號</th>
+                <th style="width: 20%">姓名</th>
+                <th style="width: 20%">科別</th>
+                <th style="width: 45%">專長</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="doc : ${doctors}">
+                <td th:text="${doc.doctorId}">D001</td>
+                <td>
+                    <a th:href="@{/doctor/appointments(doctorId=${doc.doctorId})}" th:text="${doc.name}">陳志明醫師</a>
+                </td>
+                <td th:text="${doc.department}">家醫科</td>
+                <td th:text="${doc.specialty}">一般內科、慢性病管理</td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+
+</html>

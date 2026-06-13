@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>線上掛號 - MiniClinic</title>
+    <style>
+        body { font-family: "Microsoft JhengHei", sans-serif; max-width: 960px; margin: 40px auto; padding: 0 20px; background-color: #ffffff; }
+        h1 { color: #0F2443; border-bottom: 3px solid #14B8A6; padding-bottom: 8px; }
+        nav { background: #0F2443; padding: 15px 20px; border-radius: 8px; margin-bottom: 30px; }
+        nav a { color: white; margin-right: 25px; text-decoration: none; font-weight: bold; font-size: 1rem; }
+        nav a:hover { color: #5EEAD4; }
+        .form-group { margin-bottom: 20px; max-width: 400px; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; color: #374151; }
+        input[type="text"], input[type="date"], select { width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 4px; box-sizing: border-box; font-size: 1rem; }
+        button { background-color: #14B8A6; color: white; border: none; padding: 12px 24px; font-size: 1rem; font-weight: bold; border-radius: 4px; cursor: pointer; width: 100%; max-width: 400px; }
+        button:hover { background-color: #0d9488; }
+        .error-message { background-color: #fee2e2; color: #991b1b; padding: 12px; border-radius: 6px; margin-bottom: 20px; font-weight: bold; border: 1px solid #fca5a5; max-width: 400px; }
+    </style>
+</head>
+<body>
+    <h1>MiniClinic 社區診所</h1>
+    
+    <nav>
+        <a th:href="@{/}">首頁</a>
+        <a th:href="@{/doctors}">醫師清單</a>
+        <a th:href="@{/appointment/new}">線上掛號</a>
+        <a th:href="@{/patients}">病歷資料</a>
+        <a th:href="@{/appointments}">掛號紀錄</a>
+        <a th:href="@{/stats}">統計資訊</a>
+    </nav>
+
+    <h2>預約掛號申請</h2>
+
+    <div class="error-message" th:if="${errorMessage != null}" th:text="${errorMessage}"></div>
+
+    <form th:action="@{/appointment/new}" th:object="${form}" method="post">
+        <div class="form-group">
+            <label for="chartNo">病歷號碼：</label>
+            <input type="text" id="chartNo" th:field="*{chartNo}" placeholder="例如：TEST00001" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="doctorId">選擇看診醫師：</label>
+            <select id="doctorId" th:field="*{doctorId}" required>
+                <option value="">-- 請選擇醫師 --</option>
+                <option th:each="doc : ${doctors}" th:value="${doc.doctorId}" th:text="${doc.name} + ' (' + ${doc.department} + ')'"></option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="apptDate">看診日期：</label>
+            <input type="date" id="apptDate" th:field="*{apptDate}" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="timeSlot">看診時段：</label>
+            <select id="timeSlot" th:field="*{timeSlot}" required>
+                <option value="">-- 請選擇時段 --</option>
+                <option value="AM">上午診 (AM)</option>
+                <option value="PM">下午診 (PM)</option>
+                <option value="EVENING">夜間診 (EVENING)</option>
+            </select>
+        </div>
+        
+        <button type="submit">送出掛號申請</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,42 @@
+### ====================================================================
+### Ch09C 資料庫與 JPA 整合測試端點
+### ====================================================================
+
+### 1. 新增一位 D006 醫師 (POST)
+POST http://localhost:8080/api/doctors
+Content-Type: application/json
+
+{
+  "doctorId": "D006",
+  "name": "黃國華",
+  "department": "內科",
+  "specialty": "糖尿病與內分泌新陳代謝"
+}
+
+### 2. 更新 D006 醫師的專長 (PUT)
+PUT http://localhost:8080/api/doctors/D006
+Content-Type: application/json
+
+{
+  "name": "黃國華",
+  "department": "內科",
+  "specialty": "糖尿病、甲狀腺疾病與高血壓治療"
+}
+
+### 3. 刪除 D006 醫師 (DELETE)
+DELETE http://localhost:8080/api/doctors/D006
+
+### 4. 取得所有病患清單
+GET http://localhost:8080/api/patients
+
+### 5. 取得特定病患 (TEST00001)
+GET http://localhost:8080/api/patients/TEST00001
+
+### 6. 取得總掛號數統計 (Part B)
+GET http://localhost:8080/api/appointments/count
+
+### 7. 依據看診日期篩選掛號
+GET http://localhost:8080/api/appointments?date=2026-06-01
+
+### 8. 依據醫生 ID 篩選掛號
+GET http://localhost:8080/api/appointments?doctorId=D001

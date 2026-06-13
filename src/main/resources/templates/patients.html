@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>病歷管理系統 - MiniClinic</title>
+    <style>
+        body { font-family: "Microsoft JhengHei", sans-serif; max-width: 960px; margin: 40px auto; padding: 0 20px; }
+        header { border-bottom: 3px solid #0EA5E9; padding-bottom: 12px; margin-bottom: 20px; }
+        h2 { color: #0F2443; margin: 0; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #E2E8F0; }
+        th { background: #0EA5E9; color: white; }
+        .btn-view { background-color: #0F2443; color: white; padding: 6px 12px; text-decoration: none; border-radius: 4px; font-size: 13px; }
+    </style>
+</head>
+<body>
+    <header>
+        <h2>🏥 總病歷資料庫管理中心</h2>
+        <p>可查詢全院病患之基本資料與歷次臨床診療紀錄</p>
+    </header>
+
+    <div th:if="${patients == null || patients.isEmpty()}">
+        <p>目前系統內尚無病患基本資料。</p>
+    </div>
+
+    <table th:unless="${patients == null || patients.isEmpty()}">
+        <thead>
+            <tr>
+                <th>病歷號 (Chart No)</th>
+                <th>姓名</th>
+                <th>性別</th>
+                <th>出生日期</th>
+                <th>聯絡電話</th>
+                <th>病歷操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="p : ${patients}">
+                <td th:text="${p.chartNo}" style="font-weight: bold;">TEST00001</td>
+                <td th:text="${p.name}">張三</td>
+                <td th:text="${p.gender}">男</td>
+                <td th:text="${p.birthDate}">1990-01-01</td>
+                <td th:text="${p.phone}">0912-345678</td>
+                <td>
+                    <a th:href="@{/patient/{chartNo}(chartNo=${p.chartNo})}" class="btn-view">調閱歷史病歷</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p style="text-align: center; margin-top: 30px;">
+        <a th:href="@{/dashboard}">← 返回醫生後台</a> | 
+        <a th:href="@{/appointment/new}">前往線上掛號 →</a>
+    </p>
+</body>
+</html>

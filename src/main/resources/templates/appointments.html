@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>掛號紀錄 - MiniClinic</title>
+    <style>
+        body { 
+            font-family: "Microsoft JhengHei", sans-serif; 
+            max-width: 960px; 
+            margin: 40px auto; 
+            padding: 0 20px; 
+            background-color: #ffffff; 
+        }
+        h1 { 
+            color: #0F2443; 
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        /* 頂部導覽列 */
+        nav { 
+            background: #0F2443; 
+            padding: 15px 20px; 
+            border-radius: 8px; 
+            margin-bottom: 30px; 
+        }
+        nav a { 
+            color: white; 
+            margin-right: 25px; 
+            text-decoration: none; 
+            font-weight: bold; 
+            font-size: 1rem;
+        }
+        nav a:hover { 
+            color: #5EEAD4; 
+        }
+        
+        /* 總筆數提示 */
+        .summary-text {
+            font-size: 0.95rem;
+            color: #374151;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        /* 表格樣式 */
+        table { 
+            border-collapse: collapse; 
+            width: 100%; 
+            margin-top: 10px; 
+            margin-bottom: 25px;
+        }
+        th, td { 
+            padding: 12px 14px; 
+            text-align: left; 
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 0.95rem;
+        }
+        th { 
+            background-color: #0F2443; 
+            color: white; 
+            font-weight: bold; 
+        }
+        
+        /* 狀態 BOOKED 樣式 (藍色文字連結樣式) */
+        .status-link {
+            color: #2563eb;
+            text-decoration: none;
+        }
+        .status-link:hover {
+            text-decoration: underline;
+        }
+
+        /* 底部操作連結 */
+        .bottom-links {
+            margin-top: 20px;
+            font-size: 0.95rem;
+        }
+        .bottom-links a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+        .bottom-links a:hover {
+            text-decoration: underline;
+        }
+        
+        /* 隔行變色 */
+        tbody tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a th:href="@{/}">首頁</a>
+        <a th:href="@{/doctors}">醫師清單</a>
+        <a th:href="@{/appointment/new}">線上掛號</a>
+        <a th:href="@{/patients}">病歷資料</a>
+        <a th:href="@{/appointments}">掛號紀錄</a>
+        <a th:href="@{/stats}">統計資訊</a>
+    </nav>
+
+    <h1>掛號記錄</h1>
+    <hr style="border: 0; border-top: 2px solid #14B8A6; margin-bottom: 20px;">
+
+    <div class="summary-text">
+        共 <span th:text="${totalCount}">0</span> 筆掛號
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 5%">#</th>
+                <th style="width: 15%">病歷號</th>
+                <th style="width: 15%">病患姓名</th>
+                <th style="width: 15%">醫師</th>
+                <th style="width: 12%">科別</th>
+                <th style="width: 15%">日期</th>
+                <th style="width: 13%">時段</th>
+                <th style="width: 10%">狀態</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="appt, iterStat : ${appointments}">
+                <td th:text="${iterStat.count}">1</td>
+                <td th:text="${appt.patient.chartNo}">TEST00001</td>
+                <td th:text="${appt.patient.name}">測試病患甲</td>
+                <td th:text="${appt.doctor.name}">陳志明醫師</td>
+                <td th:text="${appt.doctor.department}">家醫科</td>
+                <td th:text="${appt.apptDate}">2026-05-01</td>
+                <td th:text="${appt.timeSlot}">AM</td>
+                <td>
+                    <a href="#" class="status-link" th:text="${appt.status}">BOOKED</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="bottom-links">
+        <a th:href="@{/appointment/new}">+ 新增掛號</a> | 
+        <a th:href="@{/}">← 回首頁</a>
+    </div>
+
+</body>
+</html>
