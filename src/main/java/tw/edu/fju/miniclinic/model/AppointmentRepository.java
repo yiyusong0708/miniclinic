@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
-    // 🎯 規格書第 10 點指定：傳入 Doctor 物件與 LocalDate 日期
+    //  規格書第 10 點指定：傳入 Doctor 物件與 LocalDate 日期
     List<Appointment> findByDoctorAndApptDate(Doctor doctor, LocalDate apptDate);
 
     List<Appointment> findByApptDate(LocalDate apptDate);
