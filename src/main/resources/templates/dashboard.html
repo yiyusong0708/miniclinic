@@ -11,10 +11,14 @@
         .logout-form button { background: #94A3B8; color: white; padding: 6px 14px; border: none; border-radius: 4px; cursor: pointer; }
         .btn-pwd { background: #6366F1; color: white; padding: 6px 14px; border: none; border-radius: 4px; cursor: pointer; text-decoration: none; font-size: 14px; margin-right: 10px; }
         .btn-cancel { background: #EF4444; color: white; padding: 4px 8px; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; }
+        
+        /* 新增：「看診完成」按鈕的綠色質感樣式 */
+        .btn-complete { background: #10B981; color: white; padding: 4px 8px; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; margin-right: 6px; }
+        
         table { width: 100%; border-collapse: collapse; margin-top: 24px; }
         th, td { padding: 12px; text-align: left; border-bottom: 1px solid #E2E8F0; }
         th { background: #0F2443; color: white; }
-        /* 🎯 狀態顏色 CSS 完美對應 */
+        /*  狀態顏色 CSS 完美對應 */
         .status-BOOKED    { color: #F59E0B; font-weight: bold; }
         .status-COMPLETED { color: #10B981; font-weight: bold; }
         .status-CANCELLED { color: #94A3B8; }
@@ -59,6 +63,11 @@
                 <td>
                     <button th:if="${appt.status == 'BOOKED'}" 
                             th:data-id="${appt.id}" 
+                            onclick="completeAppointment(this)" 
+                            class="btn-complete">看診完成</button>
+
+                    <button th:if="${appt.status == 'BOOKED'}" 
+                            th:data-id="${appt.id}" 
                             onclick="cancelAppointment(this)" 
                             class="btn-cancel">取消</button>
                 </td>
@@ -71,6 +80,37 @@
     </p>
 
     <script>
+    // 新增：看診完成的 Ajax 送出邏輯
+    function completeAppointment(button) {
+        const apptId = button.getAttribute('data-id');
+
+        if (confirm("確定要將這筆掛號標記為「看診完成」嗎？")) {
+            fetch('/api/appointments/' + apptId + '/status', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ status: 'COMPLETED' }) // 傳送 COMPLETED 狀態
+            })
+            .then(response => {
+                if (response.ok) {
+                    // 成功後依規格要求重新整理頁面
+                    window.location.reload();
+                } else if (response.status === 403) {
+                    alert("錯誤：您沒有權限修改其他醫師的掛號紀錄！(403 Forbidden)");
+                } else if (response.status === 401) {
+                    alert("錯誤：登入逾時或未登入！(401 Unauthorized)");
+                } else {
+                    alert("變更狀態失敗，請稍後再試。");
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("網路或伺服器異常");
+            });
+        }
+    }
+
     function cancelAppointment(button) {
         const apptId = button.getAttribute('data-id');
 
@@ -84,7 +124,6 @@
             })
             .then(response => {
                 if (response.ok) {
-                    // 成功後重新整理頁面
                     window.location.reload();
                 } else if (response.status === 403) {
                     alert("錯誤：您沒有權限修改其他醫師的掛號紀錄！(403 Forbidden)");
